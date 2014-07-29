@@ -40,7 +40,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Autocompleter.cs" />
+    <Compile Include="DictionaryParser.cs" />
     <Compile Include="IAutocompleter.cs" />
+    <Compile Include="IDictionaryParser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
