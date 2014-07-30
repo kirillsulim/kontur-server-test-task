@@ -45,14 +45,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Bindings.cs" />
-    <Compile Include="ClientHandler.cs" />
-    <Compile Include="FileGetter.cs" />
-    <Compile Include="IClientHandler.cs" />
-    <Compile Include="IDictionaryGetter.cs" />
-    <Compile Include="IServerApplication.cs" />
+    <Compile Include="ServerApplication\ClientHandler.cs" />
+    <Compile Include="ServerApplication\IClientHandler.cs" />
+    <Compile Include="ServerApplication\IServerApplication.cs" />
     <Compile Include="EntryPoint.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ServerApplication.cs" />
+    <Compile Include="ServerApplication\ServerApplication.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

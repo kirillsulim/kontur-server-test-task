@@ -39,12 +39,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Autocompleter.cs" />
-    <Compile Include="DictionaryParser.cs" />
-    <Compile Include="IAutocompleter.cs" />
-    <Compile Include="IDictionaryParser.cs" />
+    <Compile Include="Autocompleter\Autocompleter.cs" />
+    <Compile Include="DictionaryParser\DictionaryParser.cs" />
+    <Compile Include="Autocompleter\IAutocompleter.cs" />
+    <Compile Include="DictionaryParser\FileGetter.cs" />
+    <Compile Include="DictionaryParser\IDictionaryGetter.cs" />
+    <Compile Include="DictionaryParser\IDictionaryParser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

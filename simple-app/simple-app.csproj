@@ -45,9 +45,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Bindings.cs" />
-    <Compile Include="SimpleApplication.cs" />
+    <Compile Include="SimpleApplication\SimpleApplication.cs" />
     <Compile Include="EntryPoint.cs" />
-    <Compile Include="ISimpleApplication.cs" />
+    <Compile Include="SimpleApplication\ISimpleApplication.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
