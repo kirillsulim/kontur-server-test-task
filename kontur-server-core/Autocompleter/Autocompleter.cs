@@ -1,4 +1,5 @@
-﻿using System;
+﻿using kontur_server_core.DictionaryUtils;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,12 +14,16 @@ namespace kontur_server_core
     {
         private Dictionary<string, int> d;
 
-        public void Init(Dictionary<string, int> d)
+        /// <summary>
+        /// Get dictionary using getter
+        /// </summary>
+        /// <param name="getter"></param>
+        public Autocompleter(IDictionaryGetter getter)
         {
-            this.d = d;
+            d = getter.Get();
         }
 
-        public string[] get(string index)
+        public string[] Get(string index)
         {
             // TODO: Add optimization if have some time
             var res = (from x in d

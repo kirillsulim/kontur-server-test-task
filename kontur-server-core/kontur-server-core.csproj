@@ -40,11 +40,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Autocompleter\Autocompleter.cs" />
-    <Compile Include="DictionaryParser\DictionaryParser.cs" />
+    <Compile Include="DictionaryUtils\DictionaryParser.cs" />
     <Compile Include="Autocompleter\IAutocompleter.cs" />
-    <Compile Include="DictionaryParser\FileGetter.cs" />
-    <Compile Include="DictionaryParser\IDictionaryGetter.cs" />
-    <Compile Include="DictionaryParser\IDictionaryParser.cs" />
+    <Compile Include="DictionaryUtils\FileGetter.cs" />
+    <Compile Include="DictionaryUtils\IDictionaryGetter.cs" />
+    <Compile Include="DictionaryUtils\IDictionaryParser.cs" />
+    <Compile Include="DictionaryUtils\ProxyGetter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup />

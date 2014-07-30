@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace kontur_server_core
+namespace kontur_server_core.DictionaryUtils
 {
     /// <summary>
     /// Parse stream with dictionary

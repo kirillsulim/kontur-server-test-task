@@ -1,4 +1,5 @@
 ﻿using kontur_server_core;
+using kontur_server_core.DictionaryUtils;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -17,14 +18,12 @@ namespace simple_app
 
         private IAutocompleter autocompleter;
 
-        public SimpleApplication(IDictionaryParser parser, IAutocompleter autocompleter)
-        {
-            this.parser = parser;
-            this.autocompleter = autocompleter;
-        }
-
         public void Run(TextReader cin, TextWriter cout)
         {
+            IDictionaryGetter getter;
+            IDictionaryParser parser;
+            IAutocompleter autocompleter;
+
             using (Stream stream = new MemoryStream())
             {
                 // Get dictioary word count
@@ -39,7 +38,9 @@ namespace simple_app
                 stream.Position = 0;
 
                 // Init autocompleter
-                autocompleter.Init(parser.Parse(stream));
+                parser = new DictionaryParser();
+                getter = new ProxyGetter(parser.Parse(stream));
+                autocompleter = new Autocompleter(getter);
             }
 
             // Read user words
@@ -53,7 +54,7 @@ namespace simple_app
             // Autocomplete
             foreach (var w in userWords)
             {
-                var suggest = autocompleter.get(w);
+                var suggest = autocompleter.Get(w);
                 foreach (var s in suggest)
                 {
                     cout.WriteLine(s);

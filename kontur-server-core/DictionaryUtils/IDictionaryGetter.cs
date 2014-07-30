@@ -4,12 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace kontur_server
+namespace kontur_server_core.DictionaryUtils
 {
     /// <summary>
     /// Interface 
     /// </summary>
-    interface IDictionaryGetter
+    public interface IDictionaryGetter
     {
         /// <summary>
         /// Get dictionary with words

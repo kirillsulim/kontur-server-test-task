@@ -1,4 +1,5 @@
-﻿using kontur_server_core;
+﻿using kontur_server.Adapters;
+using kontur_server_core;
 using Ninject;
 using System;
 using System.Collections.Generic;
@@ -13,14 +14,20 @@ namespace kontur_server
 {
     public class ClientHandler : IClientHandler
     {
-        [Inject]
-        private Encoding encoding;
+        private static Encoding encoding = Encoding.ASCII;
 
         private IAutocompleter autocompleter;
 
-        public void Handle(TcpClient client)
+        public ClientHandler(IAutocompleter autocompleter)
         {
-            NetworkStream stream = client.GetStream();
+            if (autocompleter == null)
+                throw new ArgumentNullException();
+            this.autocompleter = autocompleter;
+        }
+
+        public void Handle(ITcpClient client)
+        {
+            Stream stream = client.GetStream();
             var reader = new StreamReader(stream, encoding);
             var request = reader.ReadToEnd();
 
@@ -31,16 +38,16 @@ namespace kontur_server
             }
             catch (ProcessingException)
             {
-                response = "ERROR!!! Error on processing request. \"" + request + "\" is not correct request.";
+                response = "ERROR!!! Error on processing request. \"" + request + "\" is not correct request.\n";
             }
             catch (Exception)
             {
-                response = "ERROR!!! Error on processing request";
+                response = "ERROR!!! Error on processing request\n";
             }                 
 
             var writer = new StreamWriter(stream, encoding);
             writer.WriteLine(response);
-            writer.WriteLine();
+            writer.Flush();
         }
 
         /// <summary>
@@ -56,7 +63,7 @@ namespace kontur_server
                 throw new ProcessingException();
             }
 
-            var strings = autocompleter.get(request.Substring(4));
+            var strings = autocompleter.Get(request.Substring(4));
 
             var builder = new StringBuilder();
             foreach (var s in strings)

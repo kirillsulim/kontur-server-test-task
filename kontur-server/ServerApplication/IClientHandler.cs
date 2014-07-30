@@ -1,4 +1,5 @@
-﻿using System;
+﻿using kontur_server.Adapters;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Sockets;
@@ -16,6 +17,6 @@ namespace kontur_server
         /// Handle response from client
         /// </summary>
         /// <param name="client">client</param>
-        void Handle(TcpClient client);
+        void Handle(ITcpClient client);
     }
 }

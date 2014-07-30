@@ -4,6 +4,7 @@ using kontur_server_core;
 using System.IO;
 using System.Text;
 using System.Collections.Generic;
+using kontur_server_core.DictionaryUtils;
 
 namespace contur_server_core_test
 {

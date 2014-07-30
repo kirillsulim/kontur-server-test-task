@@ -1,17 +1,16 @@
-﻿using kontur_server_core;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace kontur_server
+namespace kontur_server_core.DictionaryUtils
 {
     /// <summary>
     /// Get dictionary from file
     /// </summary>
-    class FileGetter : IDictionaryGetter
+    public class FileGetter : IDictionaryGetter
     {
         private IDictionaryParser parser;
 
