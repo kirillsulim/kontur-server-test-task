@@ -28,6 +28,7 @@ namespace kontur_server
                 IKernel nKernel = new StandardKernel();
                 nKernel.Load(Assembly.GetExecutingAssembly());
 
+                // Add binding with parameters
                 nKernel.Bind<IDictionaryGetter>().To<FileGetter>()
                     .InSingletonScope().WithConstructorArgument<string>(filename);
 
@@ -48,6 +49,7 @@ namespace kontur_server
                         }
                     });
 
+                // Wait exit command
                 do
                 {
                     Console.WriteLine("Enter \"exit\" to stop server.");

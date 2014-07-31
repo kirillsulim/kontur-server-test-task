@@ -37,22 +37,30 @@ using kontur_server_core.Protocol;namespace kontur_client.Application
                 {
                     client.Connect(point);
 
-                    cout.WriteLine("Enter command: get <prefix>");
-
-                    string command = cin.ReadLine();
-
-                    reader.Connect(client.GetStream());
-
-                    reader.WriteString(command);
-                    var response = reader.ReadStringArray();
-
-                    cout.WriteLine("Server response:");
-                    foreach (var w in response)
+                    while (true)
                     {
-                        cout.WriteLine(w);
-                    }
+                        cout.WriteLine(
+    @"Enter command: 
+    get <prefix> - to get words
+    exit to exit app");
 
-                    cin.ReadLine();
+                        string command = cin.ReadLine();
+
+                        Stream stream = client.GetStream();
+
+                        reader.WriteString(stream, command);
+
+                        if (command == "exit")
+                            break;
+
+                        var response = reader.ReadStringArray(stream);
+
+                        cout.WriteLine("Server response:");
+                        foreach (var w in response)
+                        {
+                            cout.WriteLine(w);
+                        }
+                    }
                 }
                 catch (Exception e)
                 {

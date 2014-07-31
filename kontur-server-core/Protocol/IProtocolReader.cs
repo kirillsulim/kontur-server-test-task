@@ -7,18 +7,17 @@ using System.Threading.Tasks;
 
 namespace kontur_server_core.Protocol
 {
+    /// <summary>
+    /// Interface for protocol which can read
+    /// </summary>
     public interface IProtocolReader
     {
-        void WriteString(string index);
+        void WriteString(Stream s, string index);
 
-        string ReadString();
+        string ReadString(Stream s);
 
-        void WriteStringArray(string[] words);
+        void WriteStringArray(Stream s, string[] words);
 
-        string[] ReadStringArray();
-
-        void Connect(Stream s);
-
-        void Disconnect();
+        string[] ReadStringArray(Stream s);
     }
 }

@@ -16,17 +16,14 @@ namespace contur_server_core_test
         {
             Stream stream = new MemoryStream();
             IProtocolReader reader = new NumberedProtocolReader();
-            reader.Connect(stream);
 
             SavePosition(stream);
 
-            reader.WriteString("someword");
+            reader.WriteString(stream, "someword");
 
             RestorePosition(stream);
 
-            string index = reader.ReadString();
-
-            reader.Disconnect();
+            string index = reader.ReadString(stream);
 
             Assert.AreEqual("someword", index);
         }
@@ -36,20 +33,17 @@ namespace contur_server_core_test
         {
             Stream stream = new MemoryStream();
             IProtocolReader reader = new NumberedProtocolReader();
-            reader.Connect(stream);
             
 
             SavePosition(stream);
 
             string[] strs = new string[] { "first", "second", "third" };
 
-            reader.WriteStringArray(strs);
+            reader.WriteStringArray(stream, strs);
 
             RestorePosition(stream);
 
-            var result = reader.ReadStringArray();
-
-            reader.Disconnect();
+            var result = reader.ReadStringArray(stream);
 
             CollectionAssert.AreEqual(strs, result);
         }

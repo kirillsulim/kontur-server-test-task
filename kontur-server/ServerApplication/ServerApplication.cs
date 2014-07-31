@@ -23,7 +23,7 @@ namespace kontur_server
         /// Meanwhile using volatile is necessary to avoid optimisation 
         /// </summary>
         volatile private bool stopCommand;
-        volatile private bool stopped;
+        volatile private bool running;
 
         private IKernel kernel;
 
@@ -32,32 +32,26 @@ namespace kontur_server
             this.kernel = kernel;            
         }
 
+        /// <summary>
+        /// Start server on port
+        /// </summary>
+        /// <param name="port">port</param>
         public void Start(int port)
         {
             this.stopCommand = false;
-            this.stopped = true;
+            this.running = false;
 
-            IPAddress address = null;
-            var ipList = Dns.GetHostEntry("localhost").AddressList;
-            foreach (var ip in ipList)
-            {
-                if (ip.AddressFamily == AddressFamily.InterNetwork)
-                {
-                    address = ip;
-                    break;
-                }
-            }
+            IPAddress address = GetLocalIpAddress();
             if (address == null)
             {
                 throw new Exception("Cannot resolve ip address");                
             }
             
             TcpListener listner = new TcpListener(address, port);
-
             try
             {
                 listner.Start();
-                this.stopped = false;
+                this.running = true;
                 logger.Info("Server started on localhost:" + port.ToString());
 
                 while (!stopCommand)
@@ -74,6 +68,10 @@ namespace kontur_server
                             {
                                 try
                                 {
+                                    lock (logger)
+                                    {
+                                        logger.Info("Client connected.");
+                                    }
                                     IClientHandler handler = kernel.Get<IClientHandler>();
                                     handler.Handle(client);
                                 }
@@ -97,24 +95,41 @@ namespace kontur_server
             finally
             {
                 listner.Stop();
-                stopped = true;
+                running = false;
                 logger.Info("Server stopped.");
             }
         }
 
+        private static IPAddress GetLocalIpAddress()
+        {
+            IPAddress address = null;
+            var ipList = Dns.GetHostEntry("localhost").AddressList;
+
+            // Get first ip v4 address
+            foreach (var ip in ipList)
+            {
+                if (ip.AddressFamily == AddressFamily.InterNetwork)
+                {
+                    address = ip;
+                    break;
+                }
+            }
+            return address;
+        }
+
+        /// <summary>
+        /// Set stop flag and wait
+        /// </summary>
         public void Stop()
         {
             stopCommand = true;
             logger.Info("Sending stop signal.");
-            while (!stopped)
+
+            // Wait listner stop
+            while (running)
             {
                 Thread.Sleep(50);
             }
-        }
-
-        private void Handle(Object o)
-        {
-            var client = o as TcpClient;
         }
     }
 }

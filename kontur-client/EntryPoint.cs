@@ -35,6 +35,11 @@ namespace kontur_client
             app.Run();
         }
 
+        /// <summary>
+        /// Parse and check port
+        /// </summary>
+        /// <param name="p">port number</param>
+        /// <returns>verified port number</returns>
         private static int ResolvePort(string p)
         {
             int port;
@@ -47,6 +52,11 @@ namespace kontur_client
             return port;            
         }
 
+        /// <summary>
+        /// Get ip address of host
+        /// </summary>
+        /// <param name="p">hostmane</param>
+        /// <returns>ip address</returns>
         private static IPAddress ResolveIp(string p)
         {
             var addresses = Dns.GetHostAddresses(p);

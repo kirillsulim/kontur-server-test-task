@@ -9,21 +9,9 @@ namespace kontur_server_core.Protocol
 {
     public class NumberedProtocolReader : IProtocolReader
     {
-        private Stream stream;
-
         private Encoding encoding = Encoding.ASCII;
 
-        public void Connect(Stream stream)
-        {
-            this.stream = stream;
-        }
-
-        public void Disconnect()
-        {
-            this.stream = null;
-        }
-
-        public void WriteString(string index)
+        public void WriteString(Stream stream, string index)
         {
             byte[] bytes = encoding.GetBytes(index);
             int count = bytes.Length;
@@ -33,7 +21,7 @@ namespace kontur_server_core.Protocol
             bWriter.Write(bytes);
         }
 
-        public string ReadString()
+        public string ReadString(Stream stream)
         {
             BinaryReader bReader = new BinaryReader(stream);
             int count = bReader.ReadInt32();
@@ -42,7 +30,7 @@ namespace kontur_server_core.Protocol
             return encoding.GetString(bytes);
         }
 
-        public void WriteStringArray(string[] words)
+        public void WriteStringArray(Stream stream, string[] words)
         {
             StringBuilder b = new StringBuilder();
             foreach (var s in words)
@@ -58,7 +46,7 @@ namespace kontur_server_core.Protocol
             bWriter.Write(bytes);
         }
 
-        public string[] ReadStringArray()
+        public string[] ReadStringArray(Stream stream)
         {
             BinaryReader bReader = new BinaryReader(stream);
             int count = bReader.ReadInt32();

@@ -20,7 +20,7 @@ namespace kontur_server_core
         /// <param name="getter"></param>
         public Autocompleter(IDictionaryGetter getter)
         {
-            d = getter.Get();
+            d = new Dictionary<string, int>(getter.Get());
         }
 
         public string[] Get(string index)

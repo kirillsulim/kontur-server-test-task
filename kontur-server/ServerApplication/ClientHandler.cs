@@ -35,25 +35,29 @@ namespace kontur_server
         public void Handle(ITcpClient client)
         {
             Stream stream = client.GetStream();
-            pReader.Connect(stream);
-            var request = pReader.ReadString();
+            while (true)
+            {
+                var request = pReader.ReadString(stream);
 
-            string[] response;
-            try
-            {
-                response = ProcessRequest(request);
-            }
-            catch (ProcessingException)
-            {
-                response = new string[]{"ERROR!!! Error on processing request. \"" + request + "\" is not correct request.\n"};
-            }
-            catch (Exception)
-            {
-                response = new string[]{"ERROR!!! Error on processing request\n"};
-            }
+                if (request == "exit")
+                    break;
 
-            pReader.WriteStringArray(response);
-            pReader.Disconnect();
+                string[] response;
+                try
+                {
+                    response = ProcessRequest(request);
+                }
+                catch (ProcessingException)
+                {
+                    response = new string[] { "ERROR!!! Error on processing request. \"" + request + "\" is not correct request.\n" };
+                }
+                catch (Exception)
+                {
+                    response = new string[] { "ERROR!!! Error on processing request\n" };
+                }
+
+                pReader.WriteStringArray(stream, response);
+            }
         }
 
         /// <summary>
