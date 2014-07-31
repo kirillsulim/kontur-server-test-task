@@ -47,6 +47,8 @@
     <Compile Include="DictionaryUtils\IDictionaryParser.cs" />
     <Compile Include="DictionaryUtils\ProxyGetter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Protocol\IProtocolReader.cs" />
+    <Compile Include="Protocol\NumberedProtocolReader.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

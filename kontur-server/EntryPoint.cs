@@ -35,7 +35,18 @@ namespace kontur_server
                 app = nKernel.Get<IServerApplication>();
 
                 // Run application
-                ThreadPool.QueueUserWorkItem((o) => { app.Start(port); });
+                ThreadPool.QueueUserWorkItem(
+                    (o) => 
+                    {
+                        try
+                        {
+                            app.Start(port);
+                        }
+                        catch (Exception e)
+                        {
+                            logger.Fatal("Cannot start application: " + e.Message);
+                        }
+                    });
 
                 do
                 {

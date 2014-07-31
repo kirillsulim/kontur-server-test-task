@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Ninject.Modules;
 using kontur_server_core;
 using kontur_server_core.DictionaryUtils;
+using kontur_server_core.Protocol;
 
 namespace kontur_server
 {
@@ -21,6 +22,7 @@ namespace kontur_server
             Bind<IAutocompleter>().To<Autocompleter>().InThreadScope();
             Bind<IDictionaryParser>().To<DictionaryParser>().InSingletonScope();
             Bind<IClientHandler>().To<ClientHandler>().InThreadScope();
+            Bind<IProtocolReader>().To<NumberedProtocolReader>();
         }
     }
 }

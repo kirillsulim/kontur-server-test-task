@@ -8,13 +8,17 @@ using kontur_server.Adapters;
 using System.Text;
 using Ninject;
 using kontur_server_core;
+using kontur_server_core.Protocol;
+using System.Collections.Generic;
 
 namespace kontur_server_test
 {
     [TestClass]
-    public class ClientHandlerTest : BaseTest
+    public class ClientHandlerTest
     {
         private static IKernel nKernel;
+
+        private static IProtocolReader reader;
 
         [ClassInitialize]
         public static void SetUp(TestContext c)
@@ -35,6 +39,9 @@ namespace kontur_server_test
             nKernel = new StandardKernel();
             nKernel.Bind<IAutocompleter>().ToConstant<IAutocompleter>(autocompleter.Object);
             nKernel.Bind<IClientHandler>().To<ClientHandler>();
+            nKernel.Bind<IProtocolReader>().To<NumberedProtocolReader>();
+
+            reader = nKernel.Get<IProtocolReader>();
         }
 
         [TestMethod]
@@ -45,21 +52,25 @@ namespace kontur_server_test
             Stream stream = new MemoryStream();
             client.Setup(c => c.GetStream()).Returns(() => stream);
 
-            byte[] request = Encoding.UTF8.GetBytes("get aaa");
-            stream.Write(request, 0, request.Length);
-            stream.Position = 0;
+            
 
+            reader.Connect(stream);
+            reader.WriteString("get aaa");
+
+            long point = stream.Position;
+            stream.Position = 0;
+            
             IClientHandler handler = nKernel.Get<IClientHandler>();
 
             // Act
             handler.Handle(client.Object);
             
             // Assert
-            stream.Position = 7;
-            StreamReader reader = new StreamReader(stream);
-            string response = reader.ReadToEnd();
+            stream.Position = point;
 
-            Assert.AreEqual("aaa\r\naaab\r\n\r\n", response);
+            string[] response = reader.ReadStringArray();
+
+            CollectionAssert.AreEqual(new string[]{"aaa","aaab"}, response);
         }
 
         [TestMethod]
@@ -70,8 +81,12 @@ namespace kontur_server_test
             Stream stream = new MemoryStream();
             client.Setup(c => c.GetStream()).Returns(() => stream);
 
-            byte[] request = Encoding.UTF8.GetBytes("get xyz");
-            stream.Write(request, 0, request.Length);
+
+
+            reader.Connect(stream);
+            reader.WriteString("get zyz");
+
+            long point = stream.Position;
             stream.Position = 0;
 
             IClientHandler handler = nKernel.Get<IClientHandler>();
@@ -80,11 +95,23 @@ namespace kontur_server_test
             handler.Handle(client.Object);
 
             // Assert
-            stream.Position = 7;
-            StreamReader reader = new StreamReader(stream);
-            string response = reader.ReadToEnd();
+            stream.Position = point;
 
-            Assert.AreEqual("\r\n", response);
+            string[] response = reader.ReadStringArray();
+
+            CollectionAssert.AreEqual(new string[0], response);
+        }
+
+        private Dictionary<Stream, long> posMap = new Dictionary<Stream, long>();
+
+        private void SavePosition(Stream s)
+        {
+            posMap[s] = s.Position;
+        }
+
+        private void RestorePosition(Stream s)
+        {
+            s.Position = posMap[s];
         }
     }
 }

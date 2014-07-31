@@ -35,14 +35,29 @@ namespace kontur_server
         public void Start(int port)
         {
             this.stopCommand = false;
-            this.stopped = false;
+            this.stopped = true;
 
-            IPAddress address = Dns.GetHostEntry("localhost").AddressList[0];
+            IPAddress address = null;
+            var ipList = Dns.GetHostEntry("localhost").AddressList;
+            foreach (var ip in ipList)
+            {
+                if (ip.AddressFamily == AddressFamily.InterNetwork)
+                {
+                    address = ip;
+                    break;
+                }
+            }
+            if (address == null)
+            {
+                throw new Exception("Cannot resolve ip address");                
+            }
+            
             TcpListener listner = new TcpListener(address, port);
 
             try
             {
                 listner.Start();
+                this.stopped = false;
                 logger.Info("Server started on localhost:" + port.ToString());
 
                 while (!stopCommand)

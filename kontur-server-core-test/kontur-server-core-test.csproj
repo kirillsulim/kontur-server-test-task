@@ -59,6 +59,7 @@
     <Compile Include="AutocompleterTest.cs" />
     <Compile Include="DictionaryParserTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ProtocolReaderTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\kontur-server-core\kontur-server-core.csproj">

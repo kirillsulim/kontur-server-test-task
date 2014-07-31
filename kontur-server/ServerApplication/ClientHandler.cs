@@ -1,5 +1,6 @@
 ﻿using kontur_server.Adapters;
 using kontur_server_core;
+using kontur_server_core.Protocol;
 using Ninject;
 using System;
 using System.Collections.Generic;
@@ -18,36 +19,41 @@ namespace kontur_server
 
         private IAutocompleter autocompleter;
 
-        public ClientHandler(IAutocompleter autocompleter)
+        private IProtocolReader pReader;
+
+        public ClientHandler(IAutocompleter autocompleter, IProtocolReader reader)
         {
             if (autocompleter == null)
                 throw new ArgumentNullException();
             this.autocompleter = autocompleter;
+
+            if(reader == null)
+                throw new ArgumentNullException();
+            this.pReader = reader;
         }
 
         public void Handle(ITcpClient client)
         {
             Stream stream = client.GetStream();
-            var reader = new StreamReader(stream, encoding);
-            var request = reader.ReadToEnd();
+            pReader.Connect(stream);
+            var request = pReader.ReadString();
 
-            string response;
+            string[] response;
             try
             {
                 response = ProcessRequest(request);
             }
             catch (ProcessingException)
             {
-                response = "ERROR!!! Error on processing request. \"" + request + "\" is not correct request.\n";
+                response = new string[]{"ERROR!!! Error on processing request. \"" + request + "\" is not correct request.\n"};
             }
             catch (Exception)
             {
-                response = "ERROR!!! Error on processing request\n";
-            }                 
+                response = new string[]{"ERROR!!! Error on processing request\n"};
+            }
 
-            var writer = new StreamWriter(stream, encoding);
-            writer.WriteLine(response);
-            writer.Flush();
+            pReader.WriteStringArray(response);
+            pReader.Disconnect();
         }
 
         /// <summary>
@@ -55,7 +61,7 @@ namespace kontur_server
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
-        private string ProcessRequest(string request)
+        private string[] ProcessRequest(string request)
         {
             Regex pattern = new Regex("get [a-z]+");
             if (!pattern.IsMatch(request))
@@ -63,14 +69,7 @@ namespace kontur_server
                 throw new ProcessingException();
             }
 
-            var strings = autocompleter.Get(request.Substring(4));
-
-            var builder = new StringBuilder();
-            foreach (var s in strings)
-            {
-                builder.AppendLine(s);
-            }
-            return builder.ToString();
+            return autocompleter.Get(request.Substring(4));
         }
     }
 

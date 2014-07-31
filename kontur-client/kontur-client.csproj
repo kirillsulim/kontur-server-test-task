@@ -44,12 +44,21 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Program.cs" />
+    <Compile Include="Application\ClientApplication.cs" />
+    <Compile Include="Application\IClientApplication.cs" />
+    <Compile Include="Bindings.cs" />
+    <Compile Include="EntryPoint.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\kontur-server-core\kontur-server-core.csproj">
+      <Project>{e761ebd8-f777-46e4-a9c5-619fcbdab0fa}</Project>
+      <Name>kontur-server-core</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
