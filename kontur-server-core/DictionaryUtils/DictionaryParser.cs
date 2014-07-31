@@ -23,9 +23,17 @@ namespace kontur_server_core.DictionaryUtils
                 string line = reader.ReadLine();
                 string[] pair = line.Split(' ');
 
-                string word = pair[0];
-                int count = int.Parse(pair[1]);
+                // Skip all short
+                if (pair.Length < 2)
+                    continue;
+                
+                // And lines without numbers
+                int count;
+                if (!int.TryParse(pair[1], out count))
+                    continue;
 
+                string word = pair[0];
+                
                 d.Add(word, count);
             }
 

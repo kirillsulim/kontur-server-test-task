@@ -13,7 +13,7 @@ namespace kontur_client
     {
         public override void Load()
         {
-            Bind<IProtocolReader>().To<NumberedProtocolReader>();
+            Bind<IProtocolReader>().To<NewLineProtocolReader>();
         }
     }
 }

@@ -22,7 +22,7 @@ namespace kontur_server
             Bind<IAutocompleter>().To<Autocompleter>().InThreadScope();
             Bind<IDictionaryParser>().To<DictionaryParser>().InSingletonScope();
             Bind<IClientHandler>().To<ClientHandler>().InThreadScope();
-            Bind<IProtocolReader>().To<NumberedProtocolReader>();
+            Bind<IProtocolReader>().To<NewLineProtocolReader>();
         }
     }
 }

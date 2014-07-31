@@ -7,12 +7,12 @@ using System.Collections.Generic;
 namespace contur_server_core_test
 {
     [TestClass]
-    public class ProtocolReaderTest
+    public class NumberedProtocolReaderTest
     {
         
 
         [TestMethod]
-        public void ShoudWriteAndReadIndex()
+        public void ShoudWriteAndReadString()
         {
             Stream stream = new MemoryStream();
             IProtocolReader reader = new NumberedProtocolReader();

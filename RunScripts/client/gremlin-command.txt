@@ -1,0 +1,10 @@
+get k
+get iddqd
+get d
+as
+
+
+exit
+
+
+

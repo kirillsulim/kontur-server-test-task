@@ -1,0 +1,1 @@
+kontur-server ../../res/dict.txt 8666
