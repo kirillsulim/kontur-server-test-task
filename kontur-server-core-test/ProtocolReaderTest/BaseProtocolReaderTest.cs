@@ -1,27 +1,38 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using TestUtils;
 using kontur_server_core.Protocol;
 using System.IO;
-using System.Collections.Generic;
 
 namespace contur_server_core_test
 {
     [TestClass]
-    public class NumberedProtocolReaderTest
+    public abstract class BaseProtocolReaderTest
     {
-        
+        private StreamPositionSaver posSaver = new StreamPositionSaver();
+
+        private IProtocolReader reader;
+
+        [TestInitialize]
+        public void SetUpTest()
+        {
+            reader = GetReader();            
+        }
+
+        /// <summary>
+        /// Should be overriden in ancestor
+        /// </summary>
+        /// <returns>New instance of concret realisation of ProtocolReader</returns>
+        protected abstract IProtocolReader GetReader();
 
         [TestMethod]
         public void ShoudWriteAndReadString()
         {
             Stream stream = new MemoryStream();
-            IProtocolReader reader = new NumberedProtocolReader();
 
-            SavePosition(stream);
-
+            posSaver.SavePosition(stream);
             reader.WriteString(stream, "someword");
-
-            RestorePosition(stream);
+            posSaver.RestorePosition(stream);
 
             string index = reader.ReadString(stream);
 
@@ -32,32 +43,18 @@ namespace contur_server_core_test
         public void ShoudWriteAndReadStringArray()
         {
             Stream stream = new MemoryStream();
-            IProtocolReader reader = new NumberedProtocolReader();
-            
 
-            SavePosition(stream);
+            posSaver.SavePosition(stream);
 
             string[] strs = new string[] { "first", "second", "third" };
 
             reader.WriteStringArray(stream, strs);
 
-            RestorePosition(stream);
+            posSaver.RestorePosition(stream);
 
             var result = reader.ReadStringArray(stream);
 
             CollectionAssert.AreEqual(strs, result);
-        }
-
-        private Dictionary<Stream, long> posMap = new Dictionary<Stream, long>();
-
-        private void SavePosition(Stream s)
-        {
-            posMap[s] = s.Position;
-        }
-
-        private void RestorePosition(Stream s)
-        {
-            s.Position = posMap[s];
         }
     }
 }

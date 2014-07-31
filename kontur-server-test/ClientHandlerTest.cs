@@ -10,6 +10,7 @@ using Ninject;
 using kontur_server_core;
 using kontur_server_core.Protocol;
 using System.Collections.Generic;
+using TestUtils;
 
 namespace kontur_server_test
 {
@@ -20,6 +21,8 @@ namespace kontur_server_test
         private static IKernel nKernel;
 
         private static IProtocolReader reader;
+
+        private static StreamPositionSaver posSaver = new StreamPositionSaver();
 
         [ClassInitialize]
         public static void SetUp(TestContext c)
@@ -90,18 +93,6 @@ namespace kontur_server_test
             string[] response = reader.ReadStringArray(stream);
 
             CollectionAssert.AreEqual(new string[0], response);
-        }
-
-        private Dictionary<Stream, long> posMap = new Dictionary<Stream, long>();
-
-        private void SavePosition(Stream s)
-        {
-            posMap[s] = s.Position;
-        }
-
-        private void RestorePosition(Stream s)
-        {
-            s.Position = posMap[s];
         }
     }
 }

@@ -70,6 +70,10 @@
       <Project>{8453288d-b67b-4b59-a072-a89bb8a315a7}</Project>
       <Name>kontur-server</Name>
     </ProjectReference>
+    <ProjectReference Include="..\TestUtils\TestUtils.csproj">
+      <Project>{909449d2-44f5-4f33-a752-60ece7ca5c69}</Project>
+      <Name>TestUtils</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
