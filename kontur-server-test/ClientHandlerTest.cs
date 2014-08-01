@@ -14,85 +14,88 @@ using TestUtils;
 
 namespace kontur_server_test
 {
-    [Ignore] // Broken after cyclic read in Handler. 
     [TestClass]
     public class ClientHandlerTest
     {
-        private static IKernel nKernel;
+        private StreamPositionSaver posSaver = new StreamPositionSaver();
 
-        private static IProtocolReader reader;
-
-        private static StreamPositionSaver posSaver = new StreamPositionSaver();
-
-        [ClassInitialize]
-        public static void SetUp(TestContext c)
+        private class ProtocolReaderMock : IProtocolReader
         {
-            Mock<IAutocompleter> autocompleter = new Mock<IAutocompleter>();
+            // Store last writed string
+            public string LastWritedString { get; private set; }
+            public void WriteString(Stream s, string index)
+            {
+                LastWritedString = index;
+            }
 
-            // If aaa returns 2 autocomplete
-            autocompleter
-                .Setup(x => x.Get(It.Is<string>(s => s == "aaa")))
-                .Returns(new string[] {"aaa", "aaab"});
+            // Set exit
+            private bool exit = false;
+            public string ReadString(Stream s)
+            {
+                var res = exit ? "exit" : "get a";
+                exit = true;
+                return res;
+            }
 
-            // If not aaa return empty respomse
-            autocompleter
-                .Setup(x => x.Get(It.Is<string>(s => s != "aaa")))
-                .Returns(new string[0]);
-            
+            // Store last writed string array
+            public string[] LastWritedStringArray { get; set; }
+            public void WriteStringArray(Stream s, string[] words)
+            {
+                LastWritedStringArray = words;
+            }
 
-            nKernel = new StandardKernel();
-            nKernel.Bind<IAutocompleter>().ToConstant<IAutocompleter>(autocompleter.Object);
-            nKernel.Bind<IClientHandler>().To<ClientHandler>();
-            nKernel.Bind<IProtocolReader>().To<NumberedProtocolReader>();
-
-            reader = nKernel.Get<IProtocolReader>();
+            // Throws
+            public string[] ReadStringArray(Stream s)
+            {
+                throw new NotImplementedException();
+            }
         }
-
+       
+        
         [TestMethod]
         public void ShouldHandleSimpleResponse()
         {
-            // Arrange
-            Mock<ITcpClient> client = new Mock<ITcpClient>();
-            Stream stream = new MemoryStream();
-            client.Setup(c => c.GetStream()).Returns(() => stream);
+            var stream = Mock.Of<Stream>();
 
-            reader.WriteString(stream, "get aaa");
+            // return mock-stream
+            var client = Mock.Of<ITcpClient>(cl => cl.GetStream() == stream);
 
-            IClientHandler handler = nKernel.Get<IClientHandler>();
+            // always return {"a", "ab"} array
+            var autocompleter = Mock.Of<IAutocompleter>(
+                ac => ac.Get(It.IsAny<string>()) == new string[] {"a", "ab"});
 
-            // Act
-            handler.Handle(client.Object);
+            var readerMock = new ProtocolReaderMock();
+
             
-            
-            string[] response = reader.ReadStringArray(stream);
+            IClientHandler handler = new ClientHandler(autocompleter, readerMock);
 
-            CollectionAssert.AreEqual(new string[]{"aaa","aaab"}, response);
+            handler.Handle(client);
+
+            CollectionAssert.AreEqual(
+                readerMock.LastWritedStringArray,
+                new string[] { "a", "ab" });
         }
 
         [TestMethod]
         public void ShouldReturnEmptyResponse()
         {
-            // Arrange
-            Mock<ITcpClient> client = new Mock<ITcpClient>();
-            Stream stream = new MemoryStream();
-            client.Setup(c => c.GetStream()).Returns(() => stream);
+            var stream = Mock.Of<Stream>();
 
-            reader.WriteString(stream, "get zyz");
+            // return mock-stream
+            var client = Mock.Of<ITcpClient>(cl => cl.GetStream() == stream);
 
-            long point = stream.Position;
-            stream.Position = 0;
+            // always return empty array
+            var autocompleter = Mock.Of<IAutocompleter>(
+                ac => ac.Get(It.IsAny<string>()) == new string[]{});
 
-            IClientHandler handler = nKernel.Get<IClientHandler>();
+            var readerMock = new ProtocolReaderMock();
 
-            // Act
-            handler.Handle(client.Object);
 
-            // Assert
-            stream.Position = point;
+            IClientHandler handler = new ClientHandler(autocompleter, readerMock);
 
-            string[] response = reader.ReadStringArray(stream);
+            handler.Handle(client);
 
-            CollectionAssert.AreEqual(new string[0], response);
+            Assert.AreEqual(0, readerMock.LastWritedStringArray.Length);
         }
     }
 }
