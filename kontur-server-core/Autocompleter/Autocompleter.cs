@@ -4,29 +4,45 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VDS.Common.Tries;
+using kontur_server_core.DictionaryElement;
 
-namespace kontur_server_core
+namespace kontur_server_core.Autocompleter
 {
     /// <summary>
     /// Autocompleter realisation
     /// </summary>
     public class Autocompleter : IAutocompleter
     {
-        private Dictionary<string, int> d;
-
         private Dictionary<string, string[]> cache1Letter;
         private Dictionary<string, string[]> cache2Letters;
+
+        private int takeCount;
+
+        ITrie<string, char, DictionaryElement.DictionaryElement> trie;
 
         /// <summary>
         /// Get dictionary using getter
         /// </summary>
         /// <param name="getter"></param>
-        public Autocompleter(IDictionaryGetter getter)
+        public Autocompleter(IDictionaryGetter getter, int count = 10)
         {
-            d = new Dictionary<string, int>(getter.Get());
+            this.takeCount = count;
+
+            trie = new SparseStringTrie<DictionaryElement.DictionaryElement>();             
 
             cache1Letter = new Dictionary<string, string[]>();
             cache2Letters = new Dictionary<string, string[]>();
+
+            InitTrie(getter.Get());
+        }
+
+        private void InitTrie(Dictionary<string, int> dictionary)
+        {
+            foreach (var el in dictionary)
+            {
+                this.trie.Add(el.Key, new DictionaryElement.DictionaryElement(el.Key, el.Value));
+            }
         }
 
         public string[] Get(string index)
@@ -55,12 +71,20 @@ namespace kontur_server_core
 
         private string[] GetFromDictionary(string index)
         {
-            var res = (from x in d
-                       where x.Key.StartsWith(index)
-                       orderby x.Value descending, x.Key
-                       select x.Key).Take(10);
-
-            return res.ToArray();
+            var node = trie.Find(index);
+            if (node != null)
+            {
+                return node.Values
+                    .OrderByDescending(x => x.Frequency)
+                    .ThenBy(x => x.Word)
+                    .Take(takeCount)
+                    .Select(x => x.Word)
+                    .ToArray();
+            }
+            else
+            {
+                return new string[]{};
+            }
         }
     }
 }

@@ -10,8 +10,9 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using kontur_server_core.Autocompleter;
 
-namespace kontur_server
+namespace kontur_server.ServerApplication
 {
     public class ServerApplication : IServerApplication
     {

@@ -62,6 +62,7 @@
     <Compile Include="ProtocolReaderTest\NumberedProtocolReaderTest.cs" />
     <Compile Include="ProtocolReaderTest\NewLineProtocolReaderTest.cs" />
     <Compile Include="ProtocolReaderTest\BaseProtocolReaderTest.cs" />
+    <Compile Include="DictionaryElementTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\kontur-server-core\kontur-server-core.csproj">

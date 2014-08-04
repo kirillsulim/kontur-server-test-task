@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace kontur_server
+namespace kontur_server.ServerApplication
 {
     /// <summary>
     /// Interface for server application

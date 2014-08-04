@@ -9,6 +9,7 @@ using Ninject.Modules;
 
 using kontur_server_core;
 using kontur_server_core.DictionaryUtils;
+using kontur_server_core.Autocompleter;
 
 namespace simple_app
 {

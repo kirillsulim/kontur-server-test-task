@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace kontur_server_core
+namespace kontur_server_core.Autocompleter
 {
     /// <summary>
     /// Interface for autocomplete service

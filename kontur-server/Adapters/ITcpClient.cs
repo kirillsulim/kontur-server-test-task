@@ -18,10 +18,5 @@ namespace kontur_server.Adapters
         /// </summary>
         /// <returns>stream</returns>
         Stream GetStream();
-
-        /// <summary>
-        /// Dispose
-        /// </summary>
-        void Dispose();
     }
 }

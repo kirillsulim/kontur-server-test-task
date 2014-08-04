@@ -10,22 +10,27 @@ using System.Net.Sockets;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using kontur_server_core.Autocompleter;
+using NLog;
 
-namespace kontur_server
+namespace kontur_server.ServerApplication
 {
     public class ClientHandler : IClientHandler
     {
         private static Encoding encoding = Encoding.ASCII;
 
-        private IAutocompleter autocompleter;
+        private Logger logger = LogManager.GetCurrentClassLogger();        
+
+        private IRequestHandler requestHandler;
 
         private IProtocolReader pReader;
+        private IClientHandler handler;
 
-        public ClientHandler(IAutocompleter autocompleter, IProtocolReader reader)
+        public ClientHandler(IProtocolReader reader, IRequestHandler requestHandler)
         {
-            if (autocompleter == null)
+            if (requestHandler == null)
                 throw new ArgumentNullException();
-            this.autocompleter = autocompleter;
+            this.requestHandler = requestHandler;
 
             if(reader == null)
                 throw new ArgumentNullException();
@@ -51,8 +56,9 @@ namespace kontur_server
                 {
                     response = new string[] { "ERROR!!! Error on processing request. \"" + request + "\" is not correct request.\n" };
                 }
-                catch (Exception)
+                catch (Exception e)
                 {
+                    logger.Error(e);
                     response = new string[] { "ERROR!!! Error on processing request\n" };
                 }
 
@@ -67,13 +73,7 @@ namespace kontur_server
         /// <returns></returns>
         private string[] ProcessRequest(string request)
         {
-            Regex pattern = new Regex("get [a-z]+");
-            if (!pattern.IsMatch(request))
-            {
-                throw new ProcessingException();
-            }
-
-            return autocompleter.Get(request.Substring(4));
+            return requestHandler.HandleRequestToAutocompleter(request);            
         }
     }
 

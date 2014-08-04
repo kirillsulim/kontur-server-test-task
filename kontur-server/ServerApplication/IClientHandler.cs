@@ -6,7 +6,7 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace kontur_server
+namespace kontur_server.ServerApplication
 {
     /// <summary>
     /// Handler

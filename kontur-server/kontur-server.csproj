@@ -52,9 +52,11 @@
     <Compile Include="Bindings.cs" />
     <Compile Include="ServerApplication\ClientHandler.cs" />
     <Compile Include="ServerApplication\IClientHandler.cs" />
+    <Compile Include="ServerApplication\IRequestHandler.cs" />
     <Compile Include="ServerApplication\IServerApplication.cs" />
     <Compile Include="EntryPoint.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ServerApplication\RequestHandler.cs" />
     <Compile Include="ServerApplication\ServerApplication.cs" />
   </ItemGroup>
   <ItemGroup>

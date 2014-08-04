@@ -11,6 +11,8 @@ using kontur_server_core;
 using kontur_server_core.Protocol;
 using System.Collections.Generic;
 using TestUtils;
+using kontur_server_core.Autocompleter;
+using kontur_server.ServerApplication;
 
 namespace kontur_server_test
 {
@@ -61,15 +63,17 @@ namespace kontur_server_test
             var client = Mock.Of<ITcpClient>(cl => cl.GetStream() == stream);
 
             // always return {"a", "ab"} array
-            var autocompleter = Mock.Of<IAutocompleter>(
-                ac => ac.Get(It.IsAny<string>()) == new string[] {"a", "ab"});
+            var handler = new Mock<IRequestHandler>();
+            handler
+                .Setup(h => h.HandleRequestToAutocompleter(It.IsAny<string>()))
+                .Returns(new string[] { "a", "ab" });
 
             var readerMock = new ProtocolReaderMock();
 
             
-            IClientHandler handler = new ClientHandler(autocompleter, readerMock);
+            IClientHandler clientHandler = new ClientHandler(readerMock, handler.Object);
 
-            handler.Handle(client);
+            clientHandler.Handle(client);
 
             CollectionAssert.AreEqual(
                 readerMock.LastWritedStringArray,
@@ -84,16 +88,18 @@ namespace kontur_server_test
             // return mock-stream
             var client = Mock.Of<ITcpClient>(cl => cl.GetStream() == stream);
 
-            // always return empty array
-            var autocompleter = Mock.Of<IAutocompleter>(
-                ac => ac.Get(It.IsAny<string>()) == new string[]{});
+            // always return {"a", "ab"} array
+            var handler = new Mock<IRequestHandler>();
+            handler
+                .Setup(h => h.HandleRequestToAutocompleter(It.IsAny<string>()))
+                .Returns(new string[] {});
 
             var readerMock = new ProtocolReaderMock();
 
 
-            IClientHandler handler = new ClientHandler(autocompleter, readerMock);
+            IClientHandler clientHandler = new ClientHandler(readerMock, handler.Object);
 
-            handler.Handle(client);
+            clientHandler.Handle(client);
 
             Assert.AreEqual(0, readerMock.LastWritedStringArray.Length);
         }

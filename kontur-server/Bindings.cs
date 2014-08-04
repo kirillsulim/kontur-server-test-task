@@ -6,8 +6,10 @@ using System.Threading.Tasks;
 
 using Ninject.Modules;
 using kontur_server_core;
+using kontur_server_core.Autocompleter;
 using kontur_server_core.DictionaryUtils;
 using kontur_server_core.Protocol;
+using kontur_server.ServerApplication;
 
 namespace kontur_server
 {
@@ -18,9 +20,10 @@ namespace kontur_server
     {
         public override void Load()
         {
-            Bind<IServerApplication>().To<ServerApplication>();
+            Bind<IServerApplication>().To<ServerApplication.ServerApplication>();
             Bind<IAutocompleter>().To<Autocompleter>().InThreadScope();
             Bind<IDictionaryParser>().To<DictionaryParser>().InSingletonScope();
+            Bind<IRequestHandler>().To<RequestHandler>();
             Bind<IClientHandler>().To<ClientHandler>().InThreadScope();
             Bind<IProtocolReader>().To<NewLineProtocolReader>();
         }
