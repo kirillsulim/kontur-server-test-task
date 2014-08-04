@@ -15,6 +15,6 @@ namespace kontur_server_core.DictionaryUtils
         /// Get dictionary with words
         /// </summary>
         /// <returns>dictionary</returns>
-        Dictionary<string, int> Get();
+        IEnumerable<DictionaryElement.DictionaryElement> Get();
     }
 }

@@ -17,6 +17,6 @@ namespace kontur_server_core.DictionaryUtils
         /// </summary>
         /// <param name="s">Stream</param>
         /// <returns>Dictionary with words and frequencies</returns>
-        Dictionary<string, int> Parse(Stream s);
+        IEnumerable<DictionaryElement.DictionaryElement> Parse(Stream s);
     }
 }

@@ -37,11 +37,14 @@ namespace kontur_server_core.Autocompleter
             InitTrie(getter.Get());
         }
 
-        private void InitTrie(Dictionary<string, int> dictionary)
+        private void InitTrie(IEnumerable<DictionaryElement.DictionaryElement> dictionary)
         {
             foreach (var el in dictionary)
             {
-                this.trie.Add(el.Key, new DictionaryElement.DictionaryElement(el.Key, el.Value));
+                if (!trie.ContainsKey(el.Word))
+                {
+                    trie.Add(el.Word, el.DeepClone());
+                }                
             }
         }
 

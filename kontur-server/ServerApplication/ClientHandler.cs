@@ -24,7 +24,6 @@ namespace kontur_server.ServerApplication
         private IRequestHandler requestHandler;
 
         private IProtocolReader pReader;
-        private IClientHandler handler;
 
         public ClientHandler(IProtocolReader reader, IRequestHandler requestHandler)
         {

@@ -5,6 +5,8 @@ using System.IO;
 using System.Text;
 using System.Collections.Generic;
 using kontur_server_core.DictionaryUtils;
+using kontur_server_core.DictionaryElement;
+using System.Linq;
 
 namespace contur_server_core_test
 {
@@ -30,11 +32,10 @@ namespace contur_server_core_test
             stream.Write(sample, 0, sample.Length);
             stream.Position = 0;
 
-            Dictionary<string, int> d = parser.Parse(stream);
+            List<DictionaryElement> d = parser.Parse(stream).ToList();
 
             Assert.AreEqual(1, d.Count);
-            Assert.IsTrue(d.ContainsKey("wordsample"));
-            Assert.AreEqual(42, d["wordsample"]);
+            Assert.IsTrue(d.Contains(new DictionaryElement("wordsample", 42)));
         }
 
         [TestMethod]
@@ -54,19 +55,15 @@ lastword 123";
             stream.Write(sample, 0, sample.Length);
             stream.Position = 0;
 
-            Dictionary<string, int> d = parser.Parse(stream);
+            List<DictionaryElement> d = parser.Parse(stream).ToList();
 
             Assert.AreEqual(5, d.Count);
-            Assert.IsTrue(d.ContainsKey("word1"));
-            Assert.IsTrue(d.ContainsKey("word2"));
-            Assert.IsTrue(d.ContainsKey("someword"));
-            Assert.IsTrue(d.ContainsKey("anotherword"));
-            Assert.IsTrue(d.ContainsKey("lastword"));
-            Assert.AreEqual(12, d["word1"]);
-            Assert.AreEqual(13, d["word2"]);
-            Assert.AreEqual(22, d["someword"]);
-            Assert.AreEqual(33, d["anotherword"]);
-            Assert.AreEqual(123, d["lastword"]);
+            Assert.IsTrue(d.Contains(new DictionaryElement("word1", 12)));
+            Assert.IsTrue(d.Contains(new DictionaryElement("word2", 13)));
+            Assert.IsTrue(d.Contains(new DictionaryElement("someword", 22)));
+            Assert.IsTrue(d.Contains(new DictionaryElement("anotherword", 33)));
+            Assert.IsTrue(d.Contains(new DictionaryElement("lastword", 123)));
+            
         }
     }
 }

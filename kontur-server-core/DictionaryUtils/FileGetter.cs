@@ -14,7 +14,7 @@ namespace kontur_server_core.DictionaryUtils
     {
         private IDictionaryParser parser;
 
-        private Dictionary<string, int> dict;
+        IEnumerable<DictionaryElement.DictionaryElement> dict;
 
         /// <summary>
         /// Constructor. Get dictionary from file and parse it
@@ -36,7 +36,7 @@ namespace kontur_server_core.DictionaryUtils
             }
         }
 
-        public Dictionary<string, int> Get()
+        public IEnumerable<DictionaryElement.DictionaryElement> Get()
         {
             return dict;
         }

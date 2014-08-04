@@ -44,7 +44,7 @@
   <ItemGroup>
     <Compile Include="Autocompleter\Autocompleter.cs" />
     <Compile Include="CommonReference\CommonReference.cs" />
-    <Compile Include="DictionaryElements\DictionaryElement.cs" />
+    <Compile Include="DictionaryElement\DictionaryElement.cs" />
     <Compile Include="DictionaryUtils\DictionaryParser.cs" />
     <Compile Include="Autocompleter\IAutocompleter.cs" />
     <Compile Include="DictionaryUtils\FileGetter.cs" />

@@ -12,16 +12,16 @@ namespace kontur_server_core.DictionaryUtils
     /// </summary>
     public class ProxyGetter : IDictionaryGetter
     {
-        private Dictionary<string, int> d;
+        IEnumerable<DictionaryElement.DictionaryElement> wordList;
 
-        public ProxyGetter(Dictionary<string, int> d)
+        public ProxyGetter(IEnumerable<DictionaryElement.DictionaryElement> list)
         {
-            this.d = d;
+            this.wordList = list;
         }
 
-        public Dictionary<string, int> Get()
+        public IEnumerable<DictionaryElement.DictionaryElement> Get()
         {
-            return d;
+            return wordList;
         }
     }
 }

@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using Moq;
 using kontur_server_core.DictionaryUtils;
 using kontur_server_core.Autocompleter;
+using kontur_server_core.DictionaryElement;
 
 namespace contur_server_core_test
 {
@@ -14,13 +15,13 @@ namespace contur_server_core_test
         [TestMethod]
         public void ShouldSortByFrequency()
         {
-            var d = new Dictionary<string,int>();
-            d.Add("ax", 10);
-            d.Add("ar", 20);
-            d.Add("az", 30);
+            var list = new List<DictionaryElement>();
+            list.Add(new DictionaryElement("ax", 10));
+            list.Add(new DictionaryElement("ar", 20));
+            list.Add(new DictionaryElement("az", 30));
 
             Mock<IDictionaryGetter> getter = new Mock<IDictionaryGetter>();
-            getter.Setup(x => x.Get()).Returns(() => d);
+            getter.Setup(x => x.Get()).Returns(() => list);
 
             IAutocompleter ac = new Autocompleter(getter.Object);
 
@@ -32,21 +33,21 @@ namespace contur_server_core_test
         [TestMethod]
         public void ShouldGetOnlyTen()
         {
-            var d = new Dictionary<string, int>();
-            d.Add("ab", 11);
-            d.Add("ac", 12);
-            d.Add("ad", 13); 
-            d.Add("ae", 14);
-            d.Add("af", 15);
-            d.Add("ag", 16);
-            d.Add("ah", 17);
-            d.Add("ai", 18);
-            d.Add("aj", 19);
-            d.Add("ak", 20);
-            d.Add("al", 1);
+            var list = new List<DictionaryElement>();
+            list.Add(new DictionaryElement("ab", 11));
+            list.Add(new DictionaryElement("ac", 12));
+            list.Add(new DictionaryElement("ad", 13)); 
+            list.Add(new DictionaryElement("ae", 14));
+            list.Add(new DictionaryElement("af", 15));
+            list.Add(new DictionaryElement("ag", 16));
+            list.Add(new DictionaryElement("ah", 17));
+            list.Add(new DictionaryElement("ai", 18));
+            list.Add(new DictionaryElement("aj", 19));
+            list.Add(new DictionaryElement("ak", 20));
+            list.Add(new DictionaryElement("al", 1));
 
             Mock<IDictionaryGetter> getter = new Mock<IDictionaryGetter>();
-            getter.Setup(x => x.Get()).Returns(() => d);
+            getter.Setup(x => x.Get()).Returns(() => list);
 
             IAutocompleter ac = new Autocompleter(getter.Object);
 
@@ -61,11 +62,11 @@ namespace contur_server_core_test
         [TestMethod]
         public void ShouldSortInAlphabeticalOrder()
         {
-            var d = new Dictionary<string, int>();
-            d.Add("ab", 1);
-            d.Add("ad", 1);
-            d.Add("ac", 1);
-            d.Add("aa", 1);
+            var d = new List<DictionaryElement>();
+            d.Add(new DictionaryElement("ab", 1));
+            d.Add(new DictionaryElement("ad", 1));
+            d.Add(new DictionaryElement("ac", 1));
+            d.Add(new DictionaryElement("aa", 1));
 
             Mock<IDictionaryGetter> getter = new Mock<IDictionaryGetter>();
             getter.Setup(x => x.Get()).Returns(() => d);
@@ -82,11 +83,11 @@ namespace contur_server_core_test
         [TestMethod]
         public void ShouldExcludeIndexMismatch()
         {
-            var d = new Dictionary<string, int>();
-            d.Add("aa", 1);
-            d.Add("xx", 1);
-            d.Add("ab", 1);            
-            d.Add("yy", 1);
+            var d = new List<DictionaryElement>();
+            d.Add(new DictionaryElement("aa", 1));
+            d.Add(new DictionaryElement("xx", 1));
+            d.Add(new DictionaryElement("ab", 1));            
+            d.Add(new DictionaryElement("yy", 1));
 
             Mock<IDictionaryGetter> getter = new Mock<IDictionaryGetter>();
             getter.Setup(x => x.Get()).Returns(() => d);
