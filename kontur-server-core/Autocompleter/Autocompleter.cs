@@ -4,8 +4,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using VDS.Common.Tries;
 using kontur_server_core.DictionaryElement;
+
+using Trie;
 
 namespace kontur_server_core.Autocompleter
 {
@@ -19,7 +20,7 @@ namespace kontur_server_core.Autocompleter
 
         private int takeCount;
 
-        ITrie<string, char, DictionaryElement.DictionaryElement> trie;
+        TrieRoot<DictionaryElement.DictionaryElement> trie;
 
         /// <summary>
         /// Get dictionary using getter
@@ -29,7 +30,7 @@ namespace kontur_server_core.Autocompleter
         {
             this.takeCount = count;
 
-            trie = new SparseStringTrie<DictionaryElement.DictionaryElement>();             
+            trie = new TrieRoot<DictionaryElement.DictionaryElement>(count);
 
             cache1Letter = new Dictionary<string, string[]>();
             cache2Letters = new Dictionary<string, string[]>();
@@ -41,19 +42,16 @@ namespace kontur_server_core.Autocompleter
         {
             foreach (var el in dictionary)
             {
-                if (!trie.ContainsKey(el.Word))
-                {
-                    trie.Add(el.Word, el.DeepClone());
-                }                
+                trie.Add(el.Word, el.DeepClone());
             }
         }
 
         public string[] Get(string index)
         {
-            if (index.Length == 1)
+            /*if (index.Length == 1)
                 return GetFrom1Cache(index);
             if (index.Length == 2)
-                return GetFrom2Cache(index);
+                return GetFrom2Cache(index);*/
 
             return GetFromDictionary(index);
         }
@@ -74,7 +72,8 @@ namespace kontur_server_core.Autocompleter
 
         private string[] GetFromDictionary(string index)
         {
-            var node = trie.Find(index);
+            /*var node = trie.Find(index);
+            /*
             if (node != null)
             {
                 return node.Values
@@ -87,7 +86,8 @@ namespace kontur_server_core.Autocompleter
             else
             {
                 return new string[]{};
-            }
+            }*/
+            return trie.Get(index).Select(d => d.Word).ToArray();
         }
     }
 }

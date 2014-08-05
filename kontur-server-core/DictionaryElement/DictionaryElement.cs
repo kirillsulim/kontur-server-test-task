@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace kontur_server_core.DictionaryElement
 {
-    public class DictionaryElement
+    public class DictionaryElement : IComparable<DictionaryElement>
     {
         public string Word { get; private set; }
         public int Frequency { get; private set; }
@@ -44,6 +44,16 @@ namespace kontur_server_core.DictionaryElement
             if (o == null)
                 return false;
             return this.Frequency.Equals(o.Frequency) && this.Word.Equals(o.Word);
+        }
+        
+        public int CompareTo(DictionaryElement other)
+        {
+            var compare = other.Frequency.CompareTo(this.Frequency);
+            if (compare == 0)
+            {
+                compare = this.Word.CompareTo(other.Word);
+            }
+            return compare;
         }
     }
 }
