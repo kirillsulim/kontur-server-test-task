@@ -4,9 +4,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using kontur_server_core.DictionaryElement;
 
-using Trie;
+using kontur_server_core.TrieAdapters;
 
 namespace kontur_server_core.Autocompleter
 {
@@ -20,17 +19,17 @@ namespace kontur_server_core.Autocompleter
 
         private int takeCount;
 
-        TrieRoot<DictionaryElement.DictionaryElement> trie;
+        ITrieAdapter<DictionaryElement> trie;
 
         /// <summary>
         /// Get dictionary using getter
         /// </summary>
         /// <param name="getter"></param>
-        public Autocompleter(IDictionaryGetter getter, int count = 10)
+        public Autocompleter(IDictionaryGetter getter, ITrieAdapter<DictionaryElement> trie, int count = 10)
         {
             this.takeCount = count;
 
-            trie = new TrieRoot<DictionaryElement.DictionaryElement>(count);
+            this.trie = trie;
 
             cache1Letter = new Dictionary<string, string[]>();
             cache2Letters = new Dictionary<string, string[]>();
@@ -38,7 +37,7 @@ namespace kontur_server_core.Autocompleter
             InitTrie(getter.Get());
         }
 
-        private void InitTrie(IEnumerable<DictionaryElement.DictionaryElement> dictionary)
+        private void InitTrie(IEnumerable<DictionaryElement> dictionary)
         {
             foreach (var el in dictionary)
             {
@@ -48,10 +47,10 @@ namespace kontur_server_core.Autocompleter
 
         public string[] Get(string index)
         {
-            /*if (index.Length == 1)
+            if (index.Length == 1)
                 return GetFrom1Cache(index);
             if (index.Length == 2)
-                return GetFrom2Cache(index);*/
+                return GetFrom2Cache(index);
 
             return GetFromDictionary(index);
         }
@@ -72,22 +71,19 @@ namespace kontur_server_core.Autocompleter
 
         private string[] GetFromDictionary(string index)
         {
-            /*var node = trie.Find(index);
-            /*
-            if (node != null)
+            if (trie.Sorted)
             {
-                return node.Values
-                    .OrderByDescending(x => x.Frequency)
-                    .ThenBy(x => x.Word)
-                    .Take(takeCount)
-                    .Select(x => x.Word)
-                    .ToArray();
+                return trie.Get(index).Select(de => de.Word).ToArray();
             }
             else
             {
-                return new string[]{};
-            }*/
-            return trie.Get(index).Select(d => d.Word).ToArray();
+                return trie.Get(index)
+                    .OrderByDescending(de => de.Frequency)
+                    .ThenBy(de => de.Word)
+                    .Take(takeCount)
+                    .Select(de => de.Word)
+                    .ToArray();
+            }
         }
     }
 }

@@ -12,9 +12,9 @@ namespace kontur_server_core.DictionaryUtils
     /// </summary>
     public class DictionaryParser : IDictionaryParser
     {
-        public IEnumerable<DictionaryElement.DictionaryElement> Parse(Stream s)
+        public IEnumerable<DictionaryElement> Parse(Stream s)
         {
-            var list = new List<DictionaryElement.DictionaryElement>();
+            var list = new List<DictionaryElement>();
 
             StreamReader reader = new StreamReader(s, Encoding.UTF8);
 
@@ -34,7 +34,7 @@ namespace kontur_server_core.DictionaryUtils
 
                 string word = pair[0];
                 
-                list.Add(new DictionaryElement.DictionaryElement(word, count));
+                list.Add(new DictionaryElement(word, count));
             }
 
             return list;

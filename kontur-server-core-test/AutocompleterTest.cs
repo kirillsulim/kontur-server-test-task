@@ -5,13 +5,28 @@ using System.Collections.Generic;
 using Moq;
 using kontur_server_core.DictionaryUtils;
 using kontur_server_core.Autocompleter;
-using kontur_server_core.DictionaryElement;
+using kontur_server_core.TrieAdapters;
+
+using Ninject;
 
 namespace contur_server_core_test
 {
     [TestClass]
     public class AutocompleterTest
-    {        
+    {
+        private static IKernel kernel;
+
+        [ClassInitialize]
+        public static void SetUp(TestContext context)
+        {
+            AutocompleterTest.kernel = new StandardKernel();
+
+            kernel
+                .Bind<ITrieAdapter<DictionaryElement>>()
+                .To<CachedStringTrieAdapter<DictionaryElement>>()
+                .WithConstructorArgument<int>(10);
+        }
+
         [TestMethod]
         public void ShouldSortByFrequency()
         {
@@ -23,7 +38,7 @@ namespace contur_server_core_test
             Mock<IDictionaryGetter> getter = new Mock<IDictionaryGetter>();
             getter.Setup(x => x.Get()).Returns(() => list);
 
-            IAutocompleter ac = new Autocompleter(getter.Object);
+            IAutocompleter ac = new Autocompleter(getter.Object, kernel.Get<ITrieAdapter<DictionaryElement>>());
 
             var result = ac.Get("a");
 
@@ -49,7 +64,7 @@ namespace contur_server_core_test
             Mock<IDictionaryGetter> getter = new Mock<IDictionaryGetter>();
             getter.Setup(x => x.Get()).Returns(() => list);
 
-            IAutocompleter ac = new Autocompleter(getter.Object);
+            IAutocompleter ac = new Autocompleter(getter.Object, kernel.Get<ITrieAdapter<DictionaryElement>>());
 
             var result = ac.Get("a");
 
@@ -71,7 +86,7 @@ namespace contur_server_core_test
             Mock<IDictionaryGetter> getter = new Mock<IDictionaryGetter>();
             getter.Setup(x => x.Get()).Returns(() => d);
 
-            IAutocompleter ac = new Autocompleter(getter.Object);
+            IAutocompleter ac = new Autocompleter(getter.Object, kernel.Get<ITrieAdapter<DictionaryElement>>());
 
             var result = ac.Get("a");
 
@@ -92,7 +107,7 @@ namespace contur_server_core_test
             Mock<IDictionaryGetter> getter = new Mock<IDictionaryGetter>();
             getter.Setup(x => x.Get()).Returns(() => d);
 
-            IAutocompleter ac = new Autocompleter(getter.Object);
+            IAutocompleter ac = new Autocompleter(getter.Object, kernel.Get<ITrieAdapter<DictionaryElement>>());
 
             var result = ac.Get("a");
 

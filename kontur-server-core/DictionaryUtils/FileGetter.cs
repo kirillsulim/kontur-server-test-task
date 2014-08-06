@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+
 namespace kontur_server_core.DictionaryUtils
 {
     /// <summary>
@@ -14,7 +15,7 @@ namespace kontur_server_core.DictionaryUtils
     {
         private IDictionaryParser parser;
 
-        IEnumerable<DictionaryElement.DictionaryElement> dict;
+        IEnumerable<DictionaryElement> dict;
 
         /// <summary>
         /// Constructor. Get dictionary from file and parse it
@@ -36,7 +37,7 @@ namespace kontur_server_core.DictionaryUtils
             }
         }
 
-        public IEnumerable<DictionaryElement.DictionaryElement> Get()
+        public IEnumerable<DictionaryElement> Get()
         {
             return dict;
         }

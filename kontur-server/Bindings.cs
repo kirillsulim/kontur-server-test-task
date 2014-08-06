@@ -11,6 +11,8 @@ using kontur_server_core.DictionaryUtils;
 using kontur_server_core.Protocol;
 using kontur_server.ServerApplication;
 
+using kontur_server_core.TrieAdapters;
+
 namespace kontur_server
 {
     /// <summary>
@@ -26,6 +28,7 @@ namespace kontur_server
             Bind<IRequestHandler>().To<RequestHandler>();
             Bind<IClientHandler>().To<ClientHandler>().InThreadScope();
             Bind<IProtocolReader>().To<NewLineProtocolReader>();
+            Bind<ITrieAdapter<DictionaryElement>>().To<CachedStringTrieAdapter<DictionaryElement>>().WithConstructorArgument<int>(10);
         }
     }
 }

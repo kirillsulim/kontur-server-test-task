@@ -10,6 +10,7 @@ using Ninject.Modules;
 using kontur_server_core;
 using kontur_server_core.DictionaryUtils;
 using kontur_server_core.Autocompleter;
+using kontur_server_core.TrieAdapters;
 
 namespace simple_app
 {
@@ -22,6 +23,8 @@ namespace simple_app
         {
             Bind<IDictionaryParser>().To<DictionaryParser>().InSingletonScope();
             Bind<IAutocompleter>().To<Autocompleter>();
+            Bind<ITrieAdapter<DictionaryElement>>()
+                .To<CachedStringTrieAdapter<DictionaryElement>>().WithConstructorArgument<int>(10);
             Bind<ISimpleApplication>().To<SimpleApplication>();
         }
     }

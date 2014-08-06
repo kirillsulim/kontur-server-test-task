@@ -5,6 +5,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using kontur_server_core.Autocompleter;
+
 namespace simple_app
 {
     /// <summary>

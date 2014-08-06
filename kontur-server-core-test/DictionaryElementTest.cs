@@ -1,6 +1,7 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using kontur_server_core.DictionaryElement;
+
+using kontur_server_core;
 
 namespace contur_server_core_test
 {

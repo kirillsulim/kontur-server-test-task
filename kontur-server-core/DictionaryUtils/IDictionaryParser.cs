@@ -5,6 +5,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using kontur_server_core;
+
 namespace kontur_server_core.DictionaryUtils
 {
     /// <summary>
@@ -17,6 +19,6 @@ namespace kontur_server_core.DictionaryUtils
         /// </summary>
         /// <param name="s">Stream</param>
         /// <returns>Dictionary with words and frequencies</returns>
-        IEnumerable<DictionaryElement.DictionaryElement> Parse(Stream s);
+        IEnumerable<DictionaryElement> Parse(Stream s);
     }
 }

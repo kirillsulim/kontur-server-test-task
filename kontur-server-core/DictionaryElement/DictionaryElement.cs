@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace kontur_server_core.DictionaryElement
+namespace kontur_server_core
 {
     public class DictionaryElement : IComparable<DictionaryElement>
     {

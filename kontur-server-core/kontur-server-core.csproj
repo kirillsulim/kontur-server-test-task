@@ -51,6 +51,11 @@
     <Compile Include="Protocol\IProtocolReader.cs" />
     <Compile Include="Protocol\NewLineProtocolReader.cs" />
     <Compile Include="Protocol\NumberedProtocolReader.cs" />
+    <Compile Include="TrieAdapters\ITrieAdapter.cs" />
+    <Compile Include="TrieAdapters\CachedStringTrieAdapter.cs" />
+    <Compile Include="TrieAdapters\VdsExtendedStringTrieAdapter.cs" />
+    <Compile Include="TrieAdapters\GenericVdsStringTrieAdapter.cs" />
+    <Compile Include="TrieAdapters\VdsStringTrieAdapter.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

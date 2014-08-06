@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
+using Ninject;
+
 namespace simple_app
 {
     /// <summary>
@@ -11,15 +13,19 @@ namespace simple_app
     /// </summary>
     class SimpleApplication : ISimpleApplication
     {
-        private IDictionaryParser parser;
+        private IKernel kernel;
 
-        private IAutocompleter autocompleter;
+        public SimpleApplication(IKernel kernel)
+        {
+            this.kernel = kernel;
+        }
 
         public void Run(TextReader cin, TextWriter cout)
         {
-            IDictionaryGetter getter;
-            IDictionaryParser parser;
+            ProxyGetter getter;
+            DictionaryParser parser;
             IAutocompleter autocompleter;
+
 
             using (Stream stream = new MemoryStream())
             {
@@ -37,21 +43,19 @@ namespace simple_app
                 // Init autocompleter
                 parser = new DictionaryParser();
                 getter = new ProxyGetter(parser.Parse(stream));
-                autocompleter = new Autocompleter(getter);
+
+                kernel.Bind<IDictionaryParser>().ToConstant<DictionaryParser>(parser);
+                kernel.Bind<IDictionaryGetter>().ToConstant<ProxyGetter>(getter);
+
+                autocompleter = kernel.Get<IAutocompleter>();
             }
 
             // Read user words
             int userWordsCount = int.Parse(cin.ReadLine());
-            List<string> userWords = new List<string>();
             for (int i = 0; i < userWordsCount; ++i)
             {
-                userWords.Add(cin.ReadLine().Trim());
-            }
-
-            // Autocomplete
-            foreach (var w in userWords)
-            {
-                var suggest = autocompleter.Get(w);
+                var userWord = cin.ReadLine().Trim();
+                var suggest = autocompleter.Get(userWord);
                 foreach (var s in suggest)
                 {
                     cout.WriteLine(s);

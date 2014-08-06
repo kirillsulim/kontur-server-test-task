@@ -4,12 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Trie
+namespace CachedTrie
 {
-    public class TrieRoot<T> : TrieNode<T>
+    public class CachedTrieRoot<T> : CachedTrieNode<T>
         where T : IComparable<T>
     {
-        public TrieRoot(int cacheSize)
+        public CachedTrieRoot(int cacheSize)
             :base(0, cacheSize)
         {
         }

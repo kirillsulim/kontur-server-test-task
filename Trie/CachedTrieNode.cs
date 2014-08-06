@@ -4,11 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Trie
+namespace CachedTrie
 {
-    public class TrieNode<T> where T: IComparable<T>
+    public class CachedTrieNode<T> where T: IComparable<T>
     {
-        private Dictionary<char, TrieNode<T>> children;
+        private Dictionary<char, CachedTrieNode<T>> children;
 
         private T value;
 
@@ -17,13 +17,13 @@ namespace Trie
         private SortedSet<T> cache;
         private int cacheSize;
 
-        protected TrieNode(int level, int cacheSize)
+        protected CachedTrieNode(int level, int cacheSize)
         {
             this.level = level;
             this.cacheSize = cacheSize;
 
             cache = new SortedSet<T>();
-            children = new Dictionary<char, TrieNode<T>>();
+            children = new Dictionary<char, CachedTrieNode<T>>();
         }
 
         public void Add(string key, T value)
@@ -41,7 +41,7 @@ namespace Trie
                 char keyLevel = key[level];
                 if(!children.ContainsKey(keyLevel))
                 {
-                    children[keyLevel] = new TrieNode<T>(this.level + 1, this.cacheSize);
+                    children[keyLevel] = new CachedTrieNode<T>(this.level + 1, this.cacheSize);
                 }
                 children[keyLevel].Add(key, value);
             }
