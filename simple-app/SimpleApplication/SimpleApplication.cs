@@ -29,7 +29,7 @@ namespace simple_app
 
             using (Stream stream = new MemoryStream())
             {
-                // Get dictioary word count
+                // Get dictioary word takeCount
                 int wordsCount = int.Parse(cin.ReadLine().Trim());
 
                 // Fill dictionary stream

@@ -56,7 +56,10 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="AutocompleterTest.cs" />
+    <Compile Include="AutocompleterTest\BaseAutocompleterTest.cs" />
+    <Compile Include="AutocompleterTest\CachedStringTrieAutocompleterTest.cs" />
+    <Compile Include="AutocompleterTest\VdsExtendedStringTrieAutocompleterTest.cs" />
+    <Compile Include="AutocompleterTest\VdsStringTrieAutocompleterTest.cs" />
     <Compile Include="DictionaryParserTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ProtocolReaderTest\NumberedProtocolReaderTest.cs" />

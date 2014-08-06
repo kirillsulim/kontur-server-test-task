@@ -12,23 +12,9 @@ using Ninject;
 namespace contur_server_core_test
 {
     [TestClass]
-    public class AutocompleterTest
+    public abstract class BaseAutocompleterTest
     {
-        private static IKernel kernel;
-
-        [ClassInitialize]
-        public static void SetUp(TestContext context)
-        {
-            AutocompleterTest.kernel = new StandardKernel();
-
-            kernel
-                .Bind<ITrieAdapter<DictionaryElement>>()
-                //.To<VdsStringTrieAdapter<DictionaryElement>>()
-                .To<VdsExtendedStringTrieAdapter<DictionaryElement>>()
-                //.To<CachedStringTrieAdapter<DictionaryElement>>()
-                .WithConstructorArgument<int>(10)
-                ;
-        }
+        protected static IKernel kernel;
 
         [TestMethod]
         public void ShouldSortByFrequency()

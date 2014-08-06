@@ -87,10 +87,6 @@ namespace kontur_server.ServerApplication
                         }, 
                         listner.AcceptTcpClient()
                     );
-                    int tc;
-                    int ac;
-                    ThreadPool.GetMaxThreads(out tc, out ac);
-                    logger.Info("Thread count: " + tc.ToString());
                 }
             }
             catch (Exception e)

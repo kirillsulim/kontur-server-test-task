@@ -27,7 +27,7 @@ namespace simple_app
                 //.To<VdsStringTrieAdapter<DictionaryElement>()
                 //.To<CachedStringTrieAdapter<DictionaryElement>>()
                 .To<VdsExtendedStringTrieAdapter<DictionaryElement>>()
-                .WithConstructorArgument<int>(10);
+                .WithConstructorArgument<int>(10); // Max cache size
             Bind<ISimpleApplication>().To<SimpleApplication>();
         }
     }

@@ -17,7 +17,7 @@ namespace kontur_server_core.TrieAdapters
 
         /// <summary>
         /// Get values matches key. 
-        /// Values order and count depends on concrete realisation
+        /// Values order and takeCount depends on concrete realisation
         /// </summary>
         /// <param name="key">key</param>
         /// <returns>array of values</returns>

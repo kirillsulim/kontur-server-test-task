@@ -19,20 +19,27 @@ namespace kontur_server_core.Autocompleter
 
         private int takeCount;
 
+        private bool useCache;
+
         ITrieAdapter<DictionaryElement> trie;
 
         /// <summary>
         /// Get dictionary using getter
         /// </summary>
         /// <param name="getter"></param>
-        public Autocompleter(IDictionaryGetter getter, ITrieAdapter<DictionaryElement> trie, int count = 10)
+        public Autocompleter(IDictionaryGetter getter, ITrieAdapter<DictionaryElement> trie, int takeCount = 10, bool useCache = false)
         {
-            this.takeCount = count;
+            this.takeCount = takeCount;
+
+            this.useCache = useCache;
 
             this.trie = trie;
 
-            cache1Letter = new Dictionary<string, string[]>();
-            cache2Letters = new Dictionary<string, string[]>();
+            if (this.useCache)
+            {
+                cache1Letter = new Dictionary<string, string[]>();
+                cache2Letters = new Dictionary<string, string[]>();
+            }
 
             InitTrie(getter.Get());
         }
@@ -47,11 +54,13 @@ namespace kontur_server_core.Autocompleter
 
         public string[] Get(string index)
         {
-            if (index.Length == 1)
-                return GetFrom1Cache(index);
-            if (index.Length == 2)
-                return GetFrom2Cache(index);
-
+            if (useCache)
+            {
+                if (index.Length == 1)
+                    return GetFrom1Cache(index);
+                if (index.Length == 2)
+                    return GetFrom2Cache(index);
+            }
             return GetFromDictionary(index);
         }
 
