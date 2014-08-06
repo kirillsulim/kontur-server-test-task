@@ -26,6 +26,7 @@ namespace VDS.Common.Tries.Extended
             : base(keyMapper)
         {
             this.storedValuesCount = count;
+            this._root = CreateRoot(default(TKeyBit)); //Reinit hack
         }
 
         protected override ITrieNode<TKeyBit, TValue> CreateRoot(TKeyBit key)

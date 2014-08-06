@@ -50,7 +50,7 @@ namespace VDS.Common.Tries
         /// <summary>
         /// Root of the Trie
         /// </summary>
-        protected readonly ITrieNode<TKeyBit, TValue> _root;
+        protected ITrieNode<TKeyBit, TValue> _root;
         
         /// <summary>
         /// Create an empty trie with an empty root node.

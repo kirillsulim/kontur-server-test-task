@@ -24,7 +24,10 @@ namespace simple_app
             Bind<IDictionaryParser>().To<DictionaryParser>().InSingletonScope();
             Bind<IAutocompleter>().To<Autocompleter>();
             Bind<ITrieAdapter<DictionaryElement>>()
-                .To<CachedStringTrieAdapter<DictionaryElement>>().WithConstructorArgument<int>(10);
+                //.To<VdsStringTrieAdapter<DictionaryElement>()
+                //.To<CachedStringTrieAdapter<DictionaryElement>>()
+                .To<VdsExtendedStringTrieAdapter<DictionaryElement>>()
+                .WithConstructorArgument<int>(10);
             Bind<ISimpleApplication>().To<SimpleApplication>();
         }
     }

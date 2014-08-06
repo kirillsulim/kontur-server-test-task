@@ -59,6 +59,10 @@
       <Project>{e761ebd8-f777-46e4-a9c5-619fcbdab0fa}</Project>
       <Name>kontur-server-core</Name>
     </ProjectReference>
+    <ProjectReference Include="..\vds.extended\VDS.Common.Net40.csproj">
+      <Project>{176b21e1-83c4-44ae-aa8e-dc48c33cb3a8}</Project>
+      <Name>VDS.Common.Net40</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

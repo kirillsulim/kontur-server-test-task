@@ -88,7 +88,7 @@ namespace VDS.Common.Tries.Extended
         /// <summary>
         /// Return cached collection
         /// </summary>
-        virtual public IEnumerable<TValue> Values
+        override public IEnumerable<TValue> Values
         {
             get
             {

@@ -23,8 +23,11 @@ namespace contur_server_core_test
 
             kernel
                 .Bind<ITrieAdapter<DictionaryElement>>()
-                .To<CachedStringTrieAdapter<DictionaryElement>>()
-                .WithConstructorArgument<int>(10);
+                //.To<VdsStringTrieAdapter<DictionaryElement>>()
+                .To<VdsExtendedStringTrieAdapter<DictionaryElement>>()
+                //.To<CachedStringTrieAdapter<DictionaryElement>>()
+                .WithConstructorArgument<int>(10)
+                ;
         }
 
         [TestMethod]
