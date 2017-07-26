@@ -7,4 +7,4 @@ The goal was to create 2 applications:
   * Client to this server
   
 I used [trie data structure](https://en.wikipedia.org/wiki/Trie).
-Trie realization was picked from [VDS.common](https://www.nuget.org/packages/VDS.Common/) and modified to store limited amount of data in nodes for better perfomance and memory consumption. 
+Trie realization was picked from [VDS.common](https://www.nuget.org/packages/VDS.Common/) and modified to store limited amount of data in nodes for better perfomance.
