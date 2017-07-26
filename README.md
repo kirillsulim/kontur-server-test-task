@@ -6,6 +6,5 @@ The goal was to create 2 applications:
   * Server capable to return suggests like autocomplete, list of words passed in file on startup
   * Client to this server
   
-I used [https://en.wikipedia.org/wiki/Trie](trie data structure). 
-Trie realization was picked from [https://www.nuget.org/packages/VDS.Common/](VDS.common) and modeified to store limited amount of data in nodes 
-for better perfomance and memory consumption. 
+I used [trie data structure](https://en.wikipedia.org/wiki/Trie).
+Trie realization was picked from [VDS.common](https://www.nuget.org/packages/VDS.Common/) and modified to store limited amount of data in nodes for better perfomance and memory consumption. 
